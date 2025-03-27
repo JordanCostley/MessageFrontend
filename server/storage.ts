@@ -91,7 +91,8 @@ export class MemStorage implements IStorage {
       username: "currentuser",
       password: "password",
       displayName: "You",
-      status: "online"
+      status: "online",
+      avatarUrl: null
     };
     
     this.users.set(user1.id, user1);
@@ -100,7 +101,7 @@ export class MemStorage implements IStorage {
     // Create conversation
     const conversation: Conversation = {
       id: this.conversationId++,
-      name: undefined,
+      name: null,
       lastMessageAt: new Date()
     };
     this.conversations.set(conversation.id, conversation);

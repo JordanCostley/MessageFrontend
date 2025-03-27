@@ -26,8 +26,8 @@ export default function MessageActions({
 }: MessageActionsProps) {
   return (
     <div 
-      className={`message-actions absolute -top-10 ${
-        isCurrentUser ? 'left-0' : 'right-0'
+      className={`message-actions absolute top-1/2 -translate-y-1/2 ${
+        isCurrentUser ? 'right-full mr-2' : 'left-full ml-2'
       } flex items-center space-x-1 bg-white p-1 rounded-md shadow-md z-10 animate-fade-in`}
     >
       <button 
@@ -46,7 +46,7 @@ export default function MessageActions({
         </button>
         
         {showEmojiPicker && (
-          <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-20">
+          <div className={`absolute top-0 ${isCurrentUser ? 'right-0' : 'left-0'} z-20`}>
             <EmojiPicker onEmojiSelect={onEmojiSelect} />
           </div>
         )}
@@ -62,7 +62,7 @@ export default function MessageActions({
         
         {showMenu && (
           <div 
-            className="absolute top-8 right-0 bg-white shadow-lg rounded-lg py-1 w-32 z-20 animate-fade-in"
+            className={`absolute top-0 ${isCurrentUser ? 'right-0' : 'left-0'} bg-white shadow-lg rounded-lg py-1 w-32 z-20 animate-fade-in`}
           >
             <button 
               className="w-full text-left px-3 py-1.5 text-sm hover:bg-neutral-100 transition-colors flex items-center"

@@ -19,7 +19,7 @@ export default function MessageItem({
   isCurrentUser, 
   previousMessage 
 }: MessageItemProps) {
-  const [showActions, setShowActions] = useState(false);
+  const [showActions, setShowActions] = useState(true);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const messageRef = useRef<HTMLDivElement>(null);
@@ -103,11 +103,11 @@ export default function MessageItem({
   return (
     <div 
       className={`space-y-2 ${isCurrentUser ? 'flex flex-col items-end' : ''}`}
-      onMouseEnter={() => setShowActions(true)}
-      onMouseLeave={() => !showEmojiPicker && !showMenu && setShowActions(false)}
       ref={messageRef}
     >
-      <div className={`flex items-end max-w-[85%] ${isCurrentUser ? 'ml-auto' : ''} group`}>
+      <div 
+        className={`flex items-end max-w-[85%] ${isCurrentUser ? 'ml-auto' : ''} group relative`}
+      >
         {!isCurrentUser && showAvatar && (
           <Avatar className="h-8 w-8 mr-2 mb-1">
             <AvatarFallback>
@@ -124,25 +124,23 @@ export default function MessageItem({
             } shadow-sm relative`}
           >
             {/* Message actions on hover */}
-            {showActions && (
-              <MessageActions 
-                isCurrentUser={isCurrentUser} 
-                onReply={() => {}} // Reply functionality would be implemented here
-                onEmojiClick={() => {
-                  setShowEmojiPicker(!showEmojiPicker);
-                  setShowMenu(false);
-                }}
-                onMenuClick={() => {
-                  setShowMenu(!showMenu);
-                  setShowEmojiPicker(false);
-                }}
-                showEmojiPicker={showEmojiPicker}
-                showMenu={showMenu}
-                onEmojiSelect={handleEmojiSelect}
-                onCopyText={handleCopyText}
-                onDeleteMessage={handleDeleteMessage}
-              />
-            )}
+            <MessageActions 
+              isCurrentUser={isCurrentUser} 
+              onReply={() => {}} // Reply functionality would be implemented here
+              onEmojiClick={() => {
+                setShowEmojiPicker(!showEmojiPicker);
+                setShowMenu(false);
+              }}
+              onMenuClick={() => {
+                setShowMenu(!showMenu);
+                setShowEmojiPicker(false);
+              }}
+              showEmojiPicker={showEmojiPicker}
+              showMenu={showMenu}
+              onEmojiSelect={handleEmojiSelect}
+              onCopyText={handleCopyText}
+              onDeleteMessage={handleDeleteMessage}
+            />
             
             {/* Reply preview */}
             {message.replyTo && (
