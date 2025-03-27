@@ -112,6 +112,16 @@ export default function ChatInput({
         )}
         
         <div className="flex items-center bg-neutral-100 rounded-full pr-2">
+          <div className="flex-1">
+            <input
+              type="text"
+              placeholder="Message"
+              className="w-full bg-transparent py-2 px-4 focus:outline-none text-neutral-800"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              ref={inputRef}
+            />
+          </div>
           <div className="flex items-center">
             <button 
               type="button"
@@ -125,18 +135,6 @@ export default function ChatInput({
             >
               <Image className="h-5 w-5" />
             </button>
-          </div>
-          <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Message"
-              className="w-full bg-transparent py-2 px-4 focus:outline-none text-neutral-800"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              ref={inputRef}
-            />
-          </div>
-          <div className="flex items-center">
             <div className="relative">
               <button
                 type="button"
