@@ -111,23 +111,21 @@ export default function ChatInput({
           </div>
         )}
         
-        <div className="flex items-end">
-          <div className="flex space-x-2 mb-2">
+        <div className="flex items-center bg-neutral-100 rounded-full pr-2">
+          <div className="flex items-center">
             <button 
               type="button"
-              className="p-2 rounded-full hover:bg-neutral-100 transition-colors text-neutral-500"
+              className="p-2 rounded-full hover:bg-neutral-200 transition-colors text-neutral-500"
             >
               <Paperclip className="h-5 w-5" />
             </button>
             <button 
               type="button"
-              className="p-2 rounded-full hover:bg-neutral-100 transition-colors text-neutral-500"
+              className="p-2 rounded-full hover:bg-neutral-200 transition-colors text-neutral-500"
             >
               <Image className="h-5 w-5" />
             </button>
           </div>
-        </div>
-        <div className="flex items-center bg-neutral-100 rounded-full pr-2">
           <div className="flex-1">
             <input
               type="text"
