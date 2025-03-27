@@ -118,6 +118,14 @@ export default function MessageItem({
           </Avatar>
         )}
         <div className="message-container">
+          {/* Image attachments outside the container */}
+          {message.hasAttachment && message.attachment && 
+           /\.(jpg|jpeg|png|gif|webp)$/i.test(message.attachment.fileName) && (
+            <div className={`${isCurrentUser ? 'ml-auto' : 'mr-auto'} max-w-[240px]`}>
+              <AttachmentPreview attachment={message.attachment} containerless={true} />
+            </div>
+          )}
+          
           <div 
             className={`p-3 rounded-t-lg ${
               isCurrentUser 
@@ -158,8 +166,9 @@ export default function MessageItem({
               </div>
             )}
             
-            {/* Attachment preview */}
-            {message.hasAttachment && message.attachment && (
+            {/* Attachment preview - non-image attachments */}
+            {message.hasAttachment && message.attachment && 
+             !/\.(jpg|jpeg|png|gif|webp)$/i.test(message.attachment.fileName) && (
               <AttachmentPreview attachment={message.attachment} />
             )}
             
