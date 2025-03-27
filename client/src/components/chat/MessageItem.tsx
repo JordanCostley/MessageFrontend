@@ -12,12 +12,14 @@ interface MessageItemProps {
   message: MessageWithRelations;
   isCurrentUser: boolean;
   previousMessage?: MessageWithRelations;
+  onReply?: () => void;
 }
 
 export default function MessageItem({ 
   message, 
   isCurrentUser, 
-  previousMessage 
+  previousMessage,
+  onReply
 }: MessageItemProps) {
   const [showActions, setShowActions] = useState(true);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -126,7 +128,7 @@ export default function MessageItem({
             {/* Message actions on hover */}
             <MessageActions 
               isCurrentUser={isCurrentUser} 
-              onReply={() => {}} // Reply functionality would be implemented here
+              onReply={onReply || (() => {})}
               onEmojiClick={() => {
                 setShowEmojiPicker(!showEmojiPicker);
                 setShowMenu(false);

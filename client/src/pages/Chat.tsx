@@ -1,11 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import ChatHeader from "@/components/chat/ChatHeader";
 import MessageList from "@/components/chat/MessageList";
 import ChatInput from "@/components/chat/ChatInput";
-import { type ConversationWithUsers } from "@shared/schema";
+import { type ConversationWithUsers, type MessageWithRelations } from "@shared/schema";
 
 export default function Chat() {
+  // State for replying to messages
+  const [replyToMessage, setReplyToMessage] = useState<MessageWithRelations | null>(null);
+  
   // Fetch conversation data
   const { data: conversation, isLoading, isError } = useQuery<ConversationWithUsers>({
     queryKey: ['/api/conversations/current'],
@@ -74,11 +77,14 @@ export default function Chat() {
       <ChatHeader participant={otherParticipant.user} />
       <MessageList 
         messages={conversation.messages} 
-        currentUserId={currentUser.id} 
+        currentUserId={currentUser.id}
+        onReplyToMessage={setReplyToMessage}
       />
       <ChatInput 
         conversationId={conversation.id} 
-        currentUserId={currentUser.id} 
+        currentUserId={currentUser.id}
+        replyToMessage={replyToMessage}
+        onCancelReply={() => setReplyToMessage(null)}
       />
     </div>
   );

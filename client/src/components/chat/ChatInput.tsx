@@ -1,15 +1,23 @@
 import { useState, useRef, FormEvent } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Paperclip, Image, Smile, Mic, Send } from "lucide-react";
+import { Paperclip, Image, Smile, Send, X } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import EmojiPicker from "./EmojiPicker";
+import { MessageWithRelations } from "@shared/schema";
 
 interface ChatInputProps {
   conversationId: number;
   currentUserId: number;
+  replyToMessage?: MessageWithRelations | null;
+  onCancelReply?: () => void;
 }
 
-export default function ChatInput({ conversationId, currentUserId }: ChatInputProps) {
+export default function ChatInput({ 
+  conversationId, 
+  currentUserId,
+  replyToMessage,
+  onCancelReply
+}: ChatInputProps) {
   const [message, setMessage] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -23,13 +31,18 @@ export default function ChatInput({ conversationId, currentUserId }: ChatInputPr
         conversationId,
         senderId: currentUserId,
         content,
-        hasAttachment: false
+        hasAttachment: false,
+        replyToId: replyToMessage?.id || null
       });
       return response.json();
     },
     onSuccess: () => {
       // Clear input
       setMessage("");
+      // Clear reply if any
+      if (replyToMessage && onCancelReply) {
+        onCancelReply();
+      }
       // Invalidate query to refresh messages
       queryClient.invalidateQueries({ queryKey: ['/api/conversations/current'] });
     }
@@ -72,6 +85,32 @@ export default function ChatInput({ conversationId, currentUserId }: ChatInputPr
   return (
     <div className="border-t border-neutral-200 p-3 bg-white sticky bottom-0">
       <form onSubmit={handleSendMessage}>
+        {/* Reply preview */}
+        {replyToMessage && (
+          <div className="mb-2 px-4 py-2 bg-gray-100 rounded-lg flex items-center justify-between">
+            <div className="flex flex-col">
+              <div className="text-xs text-neutral-500 font-medium mb-1">
+                Replying to {replyToMessage.sender?.displayName || 'User'}
+              </div>
+              <div className="text-sm text-neutral-800 truncate max-w-[250px]">
+                {replyToMessage.content.length > 50 
+                  ? `${replyToMessage.content.substring(0, 50)}...` 
+                  : replyToMessage.content
+                }
+              </div>
+            </div>
+            {onCancelReply && (
+              <button 
+                type="button"
+                onClick={onCancelReply}
+                className="p-1 rounded-full hover:bg-neutral-200 transition-colors text-neutral-500"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        )}
+        
         <div className="flex items-end">
           <div className="flex space-x-2 mb-2">
             <button 
@@ -115,12 +154,7 @@ export default function ChatInput({ conversationId, currentUserId }: ChatInputPr
                 </div>
               )}
             </div>
-            <button
-              type="button"
-              className="p-2 rounded-full hover:bg-neutral-200 transition-colors text-neutral-500"
-            >
-              <Mic className="h-5 w-5" />
-            </button>
+
             <button
               type="submit"
               disabled={!message.trim() || sendMessageMutation.isPending}

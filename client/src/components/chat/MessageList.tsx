@@ -7,9 +7,14 @@ import { type MessageWithRelations } from "@shared/schema";
 interface MessageListProps {
   messages: MessageWithRelations[];
   currentUserId: number;
+  onReplyToMessage?: (message: MessageWithRelations) => void;
 }
 
-export default function MessageList({ messages, currentUserId }: MessageListProps) {
+export default function MessageList({ 
+  messages, 
+  currentUserId,
+  onReplyToMessage 
+}: MessageListProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Scroll to bottom when messages change
@@ -62,6 +67,7 @@ export default function MessageList({ messages, currentUserId }: MessageListProp
               message={message}
               isCurrentUser={message.senderId === currentUserId}
               previousMessage={messageIndex > 0 ? group.messages[messageIndex - 1] : undefined}
+              onReply={onReplyToMessage ? () => onReplyToMessage(message) : undefined}
             />
           ))}
         </div>
