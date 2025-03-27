@@ -174,12 +174,25 @@ export class MemStorage implements IStorage {
       hasAttachment: false
     };
     
+    // Message with image attachment from recipient
+    const message5: Message = {
+      id: this.messageId++,
+      conversationId: conversation.id,
+      senderId: user1.id,
+      content: "Check out this chart from yesterday's meeting",
+      timestamp: new Date(today.setHours(13, 15, 0, 0)),
+      status: "sent",
+      replyToId: null,
+      hasAttachment: true
+    };
+    
     this.messages.set(message1.id, message1);
     this.messages.set(message2.id, message2);
     this.messages.set(message3.id, message3);
     this.messages.set(message4.id, message4);
+    this.messages.set(message5.id, message5);
     
-    // Create attachment
+    // Create document attachment
     const attachment: Attachment = {
       id: this.attachmentId++,
       messageId: message2.id,
@@ -189,6 +202,17 @@ export class MemStorage implements IStorage {
       url: "/files/design_project.docx"
     };
     this.attachments.set(attachment.id, attachment);
+    
+    // Create image attachment
+    const imageAttachment: Attachment = {
+      id: this.attachmentId++,
+      messageId: message5.id,
+      fileName: "meeting_chart.png",
+      fileSize: "1.2mb",
+      fileType: "png",
+      url: "/assets/image_1743088801287.png"
+    };
+    this.attachments.set(imageAttachment.id, imageAttachment);
     
     // Create reaction
     const reaction: Reaction = {
