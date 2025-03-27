@@ -1,4 +1,4 @@
-import { ArrowLeft, VideoIcon, PhoneIcon, Info } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { type User } from "@shared/schema";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -34,24 +34,9 @@ export default function ChatHeader({ participant }: ChatHeaderProps) {
             <AvatarFallback>{getInitials(participant.displayName)}</AvatarFallback>
           )}
         </Avatar>
-        {participant.status === "online" && (
-          <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
-        )}
       </div>
       <div className="ml-3 flex-1">
         <h1 className="font-medium text-neutral-800">{participant.displayName}</h1>
-        <p className="text-xs text-green-500">{participant.status === "online" ? "Online" : participant.status}</p>
-      </div>
-      <div className="flex items-center gap-4">
-        <button className="p-2 rounded-full hover:bg-neutral-100 transition-colors">
-          <VideoIcon className="h-5 w-5 text-neutral-500" />
-        </button>
-        <button className="p-2 rounded-full hover:bg-neutral-100 transition-colors">
-          <PhoneIcon className="h-5 w-5 text-neutral-500" />
-        </button>
-        <button className="p-2 rounded-full hover:bg-neutral-100 transition-colors">
-          <Info className="h-5 w-5 text-neutral-500" />
-        </button>
       </div>
     </div>
   );
